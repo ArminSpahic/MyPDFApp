@@ -1,17 +1,22 @@
-name: Swift
-
+name: Example Rebase
 on:
   push:
-    branches: [ develop ]
+    branches:
+      # All pushes to this branch will trigger the task.
+      - develop
+    tags:
+      # All pushes to this tag will trigger the task.
+      - my-rebase-upstream-tag
+
 jobs:
-  merge_dev_into_master:
+  rebase_branches:
     runs-on: ubuntu-latest
     steps:
-    - uses: actions/checkout@v2
-    - name: Merge development -> staging
-      uses: devmasx/merge-branch@v1.3.0
-      with:
-       type: now
-       from_branch: develop
-       target_branch: master
-       github_token: ${{ github.token }}
+      - name: Rebase head_branch on base_ref
+        # Recommended: specify a version such as `@v1.0` rather than `@main`
+        uses: DeeDeeG/rebase-github-action@main
+        with:
+          # Head branch, which will be rebased onto the base_ref.
+          head_branch: master
+          # Branch, or Git ref, that the head_branch will be rebased onto.
+          base_ref: develop
