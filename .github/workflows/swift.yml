@@ -2,7 +2,7 @@ name: Sync multiple branches
 on:
   push:
     branches:
-      - develop
+      - 'develop'
 jobs:
   sync-branch:
     runs-on: ubuntu-latest
