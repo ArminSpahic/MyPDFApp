@@ -1,22 +1,18 @@
-name: Example Rebase
+name: Sync multiple branches
 on:
   push:
     branches:
-      # All pushes to this branch will trigger the task.
       - develop
-    tags:
-      # All pushes to this tag will trigger the task.
-      - my-rebase-upstream-tag
-
 jobs:
-  rebase_branches:
+  sync-branch:
     runs-on: ubuntu-latest
     steps:
-      - name: Rebase head_branch on base_ref
-        # Recommended: specify a version such as `@v1.0` rather than `@main`
-        uses: DeeDeeG/rebase-github-action@main
+      - uses: actions/checkout@master
+
+      - name: Merge development -> staging
+        uses: devmasx/merge-branch@v1.3.0
         with:
-          # Head branch, which will be rebased onto the base_ref.
-          head_branch: master
-          # Branch, or Git ref, that the head_branch will be rebased onto.
-          base_ref: develop
+          type: now
+          from_branch: develop
+          target_branch: master
+          github_token: ${{ github.token }}
