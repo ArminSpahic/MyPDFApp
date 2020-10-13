@@ -1,11 +1,11 @@
 name: Auto push to develop-in-home on develop update
 
- on:
+on:
      push:
          branches:
              - develop
 
- jobs:
+jobs:
      rebase-in-home:
          runs-on: ubuntu-latest
          steps:
