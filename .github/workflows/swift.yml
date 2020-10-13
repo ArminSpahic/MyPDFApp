@@ -1,18 +1,20 @@
-name: Sync multiple branches
-on:
-  push:
-    branches:
-      - develop
-jobs:
-  sync-branch:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@master
+name: Auto push to develop-in-home on develop update
 
-      - name: Merge development -> staging
-        uses: devmasx/merge-branch@v1.3.0
-        with:
-          type: now
-          from_branch: develop
-          target_branch: master
-          github_token: ${{ github.token }}
+ on:
+     push:
+         branches:
+             - develop
+
+ jobs:
+     rebase-in-home:
+         runs-on: ubuntu-latest
+         steps:
+             - name: Checkout
+               uses: actions/checkout@v1 
+             - name: Rebase in-home
+               run: scripts/rebase-in-home
+             - name: Push rebased in-home
+               uses: ad-m/github-push-action@master
+               with:
+                   branch: master
+                   github_token: ${{ secrets.GITHUB_TOKEN }}
